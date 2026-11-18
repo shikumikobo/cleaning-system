@@ -12,7 +12,10 @@ python .claude/skills/job-spec/spec.py list cleaning
 python .claude/skills/job-spec/spec.py check cleaning --strict
 ```
 
-作者は shikumikobo（しくみ工房）。デモ環境の作り方は tools/demo/README.md、操作マニュアルは docs/user-manual/。
+作者は shikumikobo（しくみ工房）。
+
+**動くデモ**：https://cleaning-demo-5c9.pages.dev/demo/ （架空の会社のデータ。役割を選んで入れます。Cloudflare Pages + Supabase。置き方は tools/demo/cloudflare/）
+デモ環境の作り方は tools/demo/README.md、操作マニュアルは docs/user-manual/。
 
 ## 開発
 
