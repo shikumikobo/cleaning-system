@@ -1,0 +1,67 @@
+name: CI
+
+# lint・型・単体・DB のテスト・ビルド・仕様とテストの対応。通らないものは配らない（constitution 3章）。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: lint・型・単体・ビルド
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter web lint
+      - run: pnpm --filter web typecheck
+      - run: pnpm --filter web test
+      - run: pnpm --filter web build
+      # 画面のテスト（Playwright + Edge）。接続先は偽物に差し替えるので、本物の Supabase は要らない
+      - run: pnpm --filter web exec playwright install --with-deps chromium
+      # 接続先の URL を入れて書き出し直してから流す（test:e2e が build を含む）
+      - run: pnpm --filter web test:e2e
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: e2e-anon
+
+  db:
+    name: DB のテスト（pgTAP）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      # 画面・メール・ログなど、DB のテストに要らないものは動かさない
+      - run: supabase start -x studio,imgproxy,realtime,logflare,vector,edge-runtime,mailpit,supavisor,postgres-meta
+      - run: supabase db reset
+      - run: supabase test db
+
+  spec:
+    name: 仕様とテストの対応
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # spec.py は products/<サービス>/ の形を期待するので、一時の products/cleaning にこのフォルダをつなぐ
+      - run: |
+          mkdir -p "$RUNNER_TEMP/products"
+          ln -s "$GITHUB_WORKSPACE" "$RUNNER_TEMP/products/cleaning"
+          python tools/spec.py --products "$RUNNER_TEMP/products" check cleaning --strict

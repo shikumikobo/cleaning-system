@@ -1,0 +1,26 @@
+/* 予定と実績の画面。スマホの幅を基準に、1列で並べる */
+.s-status { display: inline-block; font-size: 0.8rem; padding: 1px 10px; border-radius: 999px; margin-right: 6px; background: color-mix(in srgb, var(--fg) 12%, transparent); }
+.s-status.in_progress { background: color-mix(in srgb, #f59e0b 25%, transparent); }
+.s-status.done { background: color-mix(in srgb, var(--brand) 20%, transparent); color: var(--brand); }
+.s-status.skipped, .s-status.cancelled { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+.s-warn { color: #b45309; font-size: 0.9rem; margin-top: 4px; }
+.s-pending { font-size: 0.85rem; color: #b45309; }
+.s-big { font: inherit; min-height: 56px; min-width: 120px; padding: 10px 24px; border-radius: 10px; border: 1px solid var(--brand); background: var(--brand); color: #fff; font-size: 1.15rem; font-weight: bold; cursor: pointer; }
+.s-big.finish { background: #b45309; border-color: #b45309; }
+.s-big:disabled { opacity: 0.5; cursor: default; }
+.s-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.s-head h2 { margin: 0; font-size: 1.1rem; flex: 1 1 auto; }
+.s-group { margin-bottom: 16px; }
+.s-group > h3 { margin: 0 0 6px; font-size: 1rem; }
+.s-day { font-size: 0.85rem; opacity: 0.75; margin: 8px 0 2px; }
+.s-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.s-table th, .s-table td { border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); padding: 4px 6px; vertical-align: top; text-align: left; }
+.s-scroll { overflow-x: auto; }
+.s-cell a { display: block; color: var(--fg); text-decoration: none; margin-bottom: 4px; }
+.s-chip { display: inline-block; padding: 4px 12px; margin: 0 6px 6px 0; border-radius: 999px; border: 1px solid var(--brand); color: var(--brand); background: transparent; cursor: pointer; font: inherit; min-height: 36px; }
+.s-chip[aria-pressed="true"] { background: var(--brand); color: #fff; }
+.s-sum { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 0.9rem; }
+.s-sum th, .s-sum td { border-bottom: 1px solid color-mix(in srgb, var(--fg) 15%, transparent); padding: 6px 4px; text-align: right; }
+.s-sum th:first-child, .s-sum td:first-child { text-align: left; }
+
+.s-table th:first-child { white-space: nowrap; min-width: 6.5em; }

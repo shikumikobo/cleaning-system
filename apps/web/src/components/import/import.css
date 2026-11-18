@@ -1,0 +1,10 @@
+/* データの取り込みの画面。表は、スマホの幅では横にスクロールさせる */
+.im-scroll { overflow-x: auto; margin-bottom: 12px; }
+.im-table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+.im-table th, .im-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid color-mix(in srgb, var(--fg) 15%, transparent); vertical-align: top; }
+.im-table th { white-space: nowrap; }
+.im-counts { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; padding: 0; list-style: none; }
+.im-counts li { padding: 6px 12px; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); }
+.im-counts li.ok { background: color-mix(in srgb, var(--brand) 15%, transparent); }
+.im-counts li.warn { background: color-mix(in srgb, var(--warn) 18%, transparent); }
+.im-hints { font-size: 0.9rem; opacity: 0.85; margin: 4px 0 12px; padding-left: 1.2em; }

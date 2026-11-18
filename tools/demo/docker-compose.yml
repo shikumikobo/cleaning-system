@@ -1,0 +1,72 @@
+# 手元のデモ用の Supabase 一式（CLI を使わずに、各部品のイメージを直接動かす）。
+name: cleaning-demo
+services:
+  db:
+    image: supabase/postgres:17.11.0.018
+    environment: { POSTGRES_PASSWORD: "${PGPASSWORD}", JWT_SECRET: "${JWT_SECRET}" }
+    ports: ["54322:5432"]
+    volumes: [dbdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U postgres -h localhost"], interval: 3s, retries: 40 }
+  auth:
+    image: supabase/gotrue:v2.172.1
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: "9999"
+      API_EXTERNAL_URL: http://127.0.0.1:54321
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${PGPASSWORD}@db:5432/postgres
+      GOTRUE_SITE_URL: http://127.0.0.1:3000
+      GOTRUE_URI_ALLOW_LIST: "http://127.0.0.1:3000,http://127.0.0.1:3000/**,http://127.0.0.1:8801/**"
+      GOTRUE_DISABLE_SIGNUP: "false"
+      GOTRUE_JWT_SECRET: ${JWT_SECRET}
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_EXP: "3600"
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "false"
+      GOTRUE_MAILER_URLPATHS_INVITE: /auth/v1/verify
+      GOTRUE_MAILER_URLPATHS_CONFIRMATION: /auth/v1/verify
+      GOTRUE_MAILER_URLPATHS_RECOVERY: /auth/v1/verify
+      GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: /auth/v1/verify
+      GOTRUE_SMTP_HOST: mail
+      GOTRUE_SMTP_PORT: "1025"
+      GOTRUE_SMTP_ADMIN_EMAIL: demo@example.test
+  rest:
+    image: postgrest/postgrest:v12.2.12
+    depends_on: { db: { condition: service_healthy } }
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${PGPASSWORD}@db:5432/postgres
+      PGRST_DB_SCHEMAS: public,graphql_public
+      PGRST_DB_EXTRA_SEARCH_PATH: public,extensions
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      PGRST_DB_MAX_ROWS: "1000"
+  storage:
+    image: supabase/storage-api:v1.22.7
+    depends_on: { db: { condition: service_healthy }, rest: { condition: service_started } }
+    environment:
+      ANON_KEY: ${ANON_KEY}
+      SERVICE_KEY: ${SERVICE_KEY}
+      POSTGREST_URL: http://rest:3000
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: postgres://supabase_storage_admin:${PGPASSWORD}@db:5432/postgres
+      FILE_SIZE_LIMIT: "52428800"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: demo
+      REGION: local
+      GLOBAL_S3_BUCKET: demo
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+    volumes: [storage:/var/lib/storage]
+  mail:
+    image: axllent/mailpit:v1.21
+    ports: ["54324:8025"]
+  gateway:
+    image: node:22-alpine
+    depends_on: [auth, rest, storage]
+    working_dir: /app
+    command: ["node", "gateway.mjs"]
+    volumes: ["./gateway.mjs:/app/gateway.mjs:ro"]
+    ports: ["54321:54321"]
+volumes: { dbdata: {}, storage: {} }

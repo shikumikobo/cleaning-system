@@ -1,0 +1,23 @@
+/* 地図の画面（機能 013）。スマホの幅を基準に、1列で並べる */
+.map-box { height: 320px; width: 100%; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); margin-bottom: 4px; z-index: 0; }
+.map-box.picking { cursor: crosshair; outline: 2px solid #b45309; }
+.map-attr { font-size: 0.75rem; opacity: 0.75; margin: 0 0 12px; }
+.map-attr a { color: inherit; }
+.map-pin { background: transparent; border: 0; }
+.map-pin span { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #6b7280; color: #fff; font-weight: bold; font-size: 0.85rem; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+.map-pin.has-work span { background: var(--brand); }
+.map-pin.sel span { background: #b45309; width: 34px; height: 34px; }
+.map-pin.pick span { background: #dc2626; }
+.map-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.map-panel { border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); border-radius: 8px; padding: 12px; margin: 8px 0 16px; }
+.map-panel h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.map-karte { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; font-size: 0.9rem; margin: 8px 0; }
+.map-karte dt { font-weight: bold; opacity: 0.8; }
+.map-karte dd { margin: 0; }
+.map-link { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--brand); background: var(--brand); color: #fff; text-decoration: none; }
+.map-link.sub { background: transparent; color: var(--brand); }
+.map-dialog { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: flex-end; justify-content: center; z-index: 2000; }
+.map-dialog > div { background: var(--bg); color: var(--fg); width: 100%; max-width: 480px; padding: 16px; border-radius: 12px 12px 0 0; display: grid; gap: 10px; }
+.map-dialog h2 { margin: 0; font-size: 1.1rem; }
+.map-dialog p { margin: 0; font-size: 0.92rem; }
+.map-note { font-size: 0.85rem; color: #b45309; }

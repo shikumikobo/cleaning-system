@@ -1,0 +1,49 @@
+/* 見積の画面。スマホの幅を基準に、1列で並べる。印刷（A4）は /quotes/print/ */
+.q-lines { width: 100%; border-collapse: collapse; margin: 8px 0; }
+.q-lines th, .q-lines td { text-align: left; padding: 6px 4px; border-bottom: 1px solid color-mix(in srgb, var(--fg) 15%, transparent); vertical-align: top; }
+.q-lines .num, .q-total .num { text-align: right; font-family: "BIZ UDGothic", "Yu Gothic", "Meiryo", monospace; white-space: nowrap; }
+.q-card-list { display: none; }
+.q-total { margin: 12px 0; padding: 12px; border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); border-radius: 8px; max-width: 360px; }
+.q-total div { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
+.q-total .grand { font-weight: bold; font-size: 1.15rem; border-top: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); margin-top: 4px; padding-top: 6px; }
+.q-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.q-freq { font-size: 0.85rem; opacity: 0.8; }
+.q-status { display: inline-block; font-size: 0.8rem; padding: 1px 8px; border-radius: 999px; background: color-mix(in srgb, var(--fg) 12%, transparent); margin-right: 6px; }
+.q-status.submitted { background: color-mix(in srgb, #2563eb 20%, transparent); }
+.q-status.approved { background: color-mix(in srgb, var(--brand) 25%, transparent); }
+.q-status.rejected { background: color-mix(in srgb, var(--warn) 22%, transparent); }
+@media (max-width: 639px) {
+  .q-lines thead { display: none; }
+  .q-lines, .q-lines tbody, .q-lines tr, .q-lines td { display: block; width: 100%; box-sizing: border-box; }
+  .q-lines tr { padding: 8px 0; border-bottom: 1px solid color-mix(in srgb, var(--fg) 15%, transparent); }
+  .q-lines td { border: none; padding: 2px 0; text-align: left !important; }
+}
+
+/* ---- 見積書（印刷）：A4。本文は BIZ UDPGothic、金額の表は BIZ UDGothic ---- */
+@page { size: A4; margin: 18mm; }
+.qp-paper { background: #fff; color: #111; max-width: 794px; margin: 0 auto; padding: 24px; box-sizing: border-box; font-family: "BIZ UDPGothic", "Yu Gothic", "Meiryo", sans-serif; line-height: 1.6; position: relative; }
+.qp-paper h1 { text-align: center; letter-spacing: 0.5em; font-size: 1.6rem; margin: 0 0 16px; }
+.qp-head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.qp-to { flex: 1 1 280px; }
+.qp-to .name { font-size: 1.2rem; border-bottom: 1px solid #111; padding-bottom: 2px; display: inline-block; min-width: 260px; }
+.qp-meta { font-size: 0.9rem; text-align: right; }
+.qp-grand { margin: 16px 0; padding: 8px 12px; border: 2px solid #111; display: flex; justify-content: space-between; align-items: baseline; max-width: 420px; }
+.qp-grand .amount { font-family: "BIZ UDGothic", "Yu Gothic", "Meiryo", monospace; font-size: 1.5rem; font-weight: bold; }
+.qp-table { width: 100%; border-collapse: collapse; font-family: "BIZ UDGothic", "Yu Gothic", "Meiryo", monospace; font-size: 0.92rem; }
+.qp-table th, .qp-table td { border: 1px solid #555; padding: 4px 6px; }
+.qp-table th { background: #eee; font-family: "BIZ UDPGothic", "Yu Gothic", "Meiryo", sans-serif; }
+.qp-table td.num { text-align: right; white-space: nowrap; }
+.qp-sum { margin: 8px 0 0 auto; width: 300px; font-family: "BIZ UDGothic", "Yu Gothic", "Meiryo", monospace; border-collapse: collapse; }
+.qp-sum td { border: 1px solid #555; padding: 4px 8px; }
+.qp-sum td.num { text-align: right; }
+.qp-sum tr.grand td { font-weight: bold; background: #eee; }
+.qp-company { margin-top: 24px; text-align: right; font-size: 0.95rem; }
+.qp-company .name { font-size: 1.1rem; font-weight: bold; }
+.qp-note { margin-top: 16px; font-size: 0.9rem; white-space: pre-wrap; border: 1px solid #999; padding: 8px; }
+.qp-draft { position: absolute; top: 12px; right: 12px; border: 2px solid #b91c1c; color: #b91c1c; padding: 2px 12px; font-weight: bold; transform: rotate(8deg); }
+@media print {
+  .app-header, .q-noprint { display: none !important; }
+  html, body { background: #fff !important; color: #111 !important; }
+  main { padding: 0 !important; max-width: none !important; }
+  .qp-paper { max-width: none; padding: 0; }
+}

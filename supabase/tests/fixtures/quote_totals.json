@@ -1,0 +1,15 @@
+{
+  "note": "画面の合計（calcQuote）と DB の提出の RPC が、同じ入力で同じ答えになることを確かめる共通のデータ（R-004-29）。qty は小数 2 桁まで。",
+  "cases": [
+    { "name": "1行", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 10000 }], "expected": { "subtotal": 10000, "tax": 1000, "total": 11000 } },
+    { "name": "2行", "tax_rate": 0.1, "lines": [{ "qty": 3, "unit_price": 1500 }, { "qty": 2, "unit_price": 3300 }], "expected": { "subtotal": 11100, "tax": 1110, "total": 12210 } },
+    { "name": "税は切り捨て", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 10005 }], "expected": { "subtotal": 10005, "tax": 1000, "total": 11005 } },
+    { "name": "小数の数量", "tax_rate": 0.1, "lines": [{ "qty": 1.5, "unit_price": 3333 }, { "qty": 0.25, "unit_price": 1000 }], "expected": { "subtotal": 5250, "tax": 525, "total": 5775 } },
+    { "name": "明細の円未満は四捨五入", "tax_rate": 0.1, "lines": [{ "qty": 0.5, "unit_price": 3 }, { "qty": 0.5, "unit_price": 5 }], "expected": { "subtotal": 5, "tax": 0, "total": 5 } },
+    { "name": "税率 8%", "tax_rate": 0.08, "lines": [{ "qty": 1, "unit_price": 12345 }], "expected": { "subtotal": 12345, "tax": 987, "total": 13332 } },
+    { "name": "税率 0", "tax_rate": 0, "lines": [{ "qty": 1, "unit_price": 777 }], "expected": { "subtotal": 777, "tax": 0, "total": 777 } },
+    { "name": "大きな金額", "tax_rate": 0.1, "lines": [{ "qty": 100000, "unit_price": 99999 }], "expected": { "subtotal": 9999900000, "tax": 999990000, "total": 10999890000 } },
+    { "name": "税が 1 円未満", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 9 }], "expected": { "subtotal": 9, "tax": 0, "total": 9 } },
+    { "name": "明細ごとに税をかけない（3 行で端数）", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 15 }, { "qty": 1, "unit_price": 15 }, { "qty": 1, "unit_price": 15 }], "expected": { "subtotal": 45, "tax": 4, "total": 49 } }
+  ]
+}

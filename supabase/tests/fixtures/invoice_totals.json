@@ -1,0 +1,11 @@
+{
+  "note": "請求書の合計（画面の calcInvoice と、DB の発行の RPC）が同じ入力で同じ答えになることを確かめる共通のデータ（R-011-32）。同じ数字を supabase/tests/23_invoices.sql の mkcase（R-011-15・32）に書いてあり、DB は本物の Postgres（Docker）で確かめる。qty は小数 2 桁まで。",
+  "cases": [
+    { "name": "1行", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 100 }], "expected": { "subtotal": 100, "tax": 10, "total": 110 } },
+    { "name": "明細ごとに税をかけない（99＋99）", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 99 }, { "qty": 1, "unit_price": 99 }], "expected": { "subtotal": 198, "tax": 19, "total": 217 } },
+    { "name": "円未満は四捨五入（166.5 → 167）、税は切り捨て", "tax_rate": 0.1, "lines": [{ "qty": 0.5, "unit_price": 333 }], "expected": { "subtotal": 167, "tax": 16, "total": 183 } },
+    { "name": "税率 8%", "tax_rate": 0.08, "lines": [{ "qty": 2.5, "unit_price": 1000 }, { "qty": 1, "unit_price": 1 }], "expected": { "subtotal": 2501, "tax": 200, "total": 2701 } },
+    { "name": "大きな金額", "tax_rate": 0.1, "lines": [{ "qty": 1, "unit_price": 99999999999 }], "expected": { "subtotal": 99999999999, "tax": 9999999999, "total": 109999999998 } },
+    { "name": "税率 10.55%（小数の数量）", "tax_rate": 0.1055, "lines": [{ "qty": 3, "unit_price": 3333 }, { "qty": 0.01, "unit_price": 100 }], "expected": { "subtotal": 10000, "tax": 1055, "total": 11055 } }
+  ]
+}

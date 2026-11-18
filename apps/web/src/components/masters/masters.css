@@ -1,0 +1,30 @@
+/* 取引先・建物の画面。スマホの幅を基準に、1列で並べる */
+.m-nav { display: flex; gap: 8px; margin-bottom: 16px; }
+.m-nav a { flex: 1; text-align: center; padding: 10px 8px; border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); border-radius: 8px; color: var(--fg); text-decoration: none; }
+.m-nav a[aria-current="page"] { background: var(--brand); color: #fff; border-color: var(--brand); }
+.m-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.m-bar input[type="search"] { flex: 1 1 180px; }
+.m-card { display: block; padding: 12px; margin-bottom: 8px; border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); border-radius: 8px; color: var(--fg); text-decoration: none; }
+.m-card strong { display: block; font-size: 1.05rem; }
+.m-sub { font-size: 0.9rem; opacity: 0.75; margin-top: 2px; }
+.m-badge { display: inline-block; font-size: 0.8rem; padding: 1px 8px; border-radius: 999px; background: color-mix(in srgb, var(--brand) 18%, transparent); margin-right: 6px; }
+.m-badge.off { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.m-form { display: grid; gap: 12px; margin-bottom: 20px; }
+.m-field { display: grid; gap: 4px; }
+.m-field label { font-size: 0.9rem; font-weight: bold; }
+.m-field input, .m-field select, .m-field textarea, .m-bar input, .m-bar select { font: inherit; padding: 10px; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 6px; background: var(--bg); color: var(--fg); min-height: 44px; box-sizing: border-box; width: 100%; }
+.m-field textarea { min-height: 72px; }
+.m-err { color: #b91c1c; font-size: 0.85rem; }
+.m-btn { font: inherit; min-height: 44px; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--brand); background: var(--brand); color: #fff; cursor: pointer; }
+.m-btn.sub { background: transparent; color: var(--brand); }
+.m-btn.danger { background: transparent; color: #b91c1c; border-color: #b91c1c; }
+.m-btn:disabled { opacity: 0.5; cursor: default; }
+.m-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.m-msg { padding: 10px 12px; border-radius: 8px; margin: 8px 0; background: color-mix(in srgb, var(--warn) 15%, transparent); }
+.m-msg.ok { background: color-mix(in srgb, var(--brand) 15%, transparent); }
+.m-section { margin-top: 28px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--fg) 15%, transparent); }
+.m-item { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid color-mix(in srgb, var(--fg) 10%, transparent); }
+@media (min-width: 640px) {
+  .m-form.two { grid-template-columns: 1fr 1fr; }
+  .m-form .wide { grid-column: 1 / -1; }
+}

@@ -1,0 +1,26 @@
+/* 清掃報告書の画面。スマホの幅を基準に、1列で並べる。印刷は /reports/print/ */
+.r-item { display: grid; gap: 8px; padding: 12px; margin-bottom: 8px; border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); border-radius: 8px; }
+.r-item.done { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
+.r-check { display: flex; gap: 10px; align-items: center; font-size: 1.1rem; font-weight: bold; min-height: 44px; }
+.r-check input { width: 28px; height: 28px; flex: none; }
+.r-shots { display: flex; flex-wrap: wrap; gap: 8px; }
+.r-shot { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--brand); color: var(--brand); cursor: pointer; font-size: 0.95rem; }
+.r-shot input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.r-thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+.r-thumbs img { width: 72px; height: 54px; object-fit: cover; border-radius: 4px; }
+.r-status { display: inline-block; font-size: 0.8rem; padding: 1px 10px; border-radius: 999px; margin-right: 6px; background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+.r-status.checked, .r-status.submitted { background: color-mix(in srgb, var(--brand) 18%, transparent); color: var(--brand); }
+.r-pending { padding: 10px 12px; border-radius: 8px; margin: 8px 0 12px; display: grid; gap: 6px; background: color-mix(in srgb, #f59e0b 22%, transparent); }
+.r-paper { max-width: 800px; margin: 0 auto; }
+.r-paper h1 { font-size: 1.4rem; }
+.r-paper table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.r-paper th, .r-paper td { border: 1px solid #888; padding: 6px 8px; text-align: left; vertical-align: top; }
+.r-paper .r-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.r-paper .r-photos figure { margin: 0; break-inside: avoid; }
+.r-paper .r-photos img { width: 100%; height: auto; display: block; }
+@media print {
+  @page { size: A4; margin: 18mm; }
+  .app-header, .r-noprint { display: none !important; }
+  main { padding: 0 !important; max-width: none !important; }
+  body { background: #fff; color: #000; }
+}
